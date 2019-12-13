@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  year: MyString
+  make: MyString
+  model: MyString
+  details: MyString
+  nickname: MyString
+  user: one
+
+two:
+  year: MyString
+  make: MyString
+  model: MyString
+  details: MyString
+  nickname: MyString
+  user: two

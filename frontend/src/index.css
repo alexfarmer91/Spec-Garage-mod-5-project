@@ -35,5 +35,6 @@ code {
 }
 .active {
   background: grey;
-  color: white;
+  filter: blur(2px);
+  transition: filter 1s;
 }

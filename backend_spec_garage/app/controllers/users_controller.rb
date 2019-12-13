@@ -6,6 +6,10 @@ class UsersController < ApplicationController
     render json: user
   end
 
+  def index
+    render json: User.all
+  end 
+
   def create
     user = User.create(user_params)
     if user.valid?
@@ -14,6 +18,18 @@ class UsersController < ApplicationController
       render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
     end
   end
+
+  def update
+    user = User.find(params.require(:id))
+    user.update(user_params)
+    head :no_content
+  end
+
+  def destroy
+    user = User.find(params.require(:id))
+    user.destroy
+    head :no_content
+  end 
 
   private 
   def user_params

@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  part_type: MyString
+  brand: MyString
+  version: MyString
+  details: MyString
+  rating: 1
+  car: one
+
+two:
+  part_type: MyString
+  brand: MyString
+  version: MyString
+  details: MyString
+  rating: 1
+  car: two

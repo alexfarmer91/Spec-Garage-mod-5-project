@@ -1,7 +1,7 @@
 import React, {Fragment} from 'react';
 import './App.css';
 import Nav from './components/Nav.js';
-import LoginSelect from './components/LoginSelect.js'
+// import LoginSelect from './components/LoginSelect.js'
 import ClimbContainer from './components/ClimbContainer.js';
 import ButtonContainer from "./components/ButtonContainer.js"
 import LoginForm from "./components/LoginForm.js"
@@ -14,12 +14,23 @@ import { Route, Switch, NavLink, Redirect } from 'react-router-dom'
 class App extends React.Component {
 
   state = {
-    climbs: [],
+    token: null,
     menuType: null,
     isDisplaying: false,
     displayClimb: {},
     session: false,
-    loggedInUser: null
+    loggedInUserId: null
+  }
+
+  setToken = ({ token, user_id })  =>{
+
+    localStorage.token = token
+    localStorage.user_id = user_id
+
+    this.setState({
+      token: token,
+      loggedInUserId: user_id
+    })
   }
 
 
@@ -42,12 +53,10 @@ class App extends React.Component {
   }
 
   componentDidMount(){
-    fetch('http://localhost:3000/climbs')
+    fetch('http://localhost:3000/cars')
     .then(r => r.json())
-    .then(allClimbs => {
-      this.setState({
-        climbs: allClimbs
-      })
+    .then(allCars => {
+      console.log(allCars)
     })
   }
 
@@ -58,7 +67,7 @@ class App extends React.Component {
       case "signup":
         return <SignupForm backButtonClick={this.menuBack} handleLogin={this.handleLogin}  />
       case "login":
-        return <LoginForm backButtonClick={this.menuBack} handleLogin={this.handleLogin}  />
+        return <LoginForm setToken={this.setToken} backButtonClick={this.menuBack} handleLogin={this.handleLogin}  />
       default:
         return <ButtonContainer signupClick={this.changeToSignup} loginClick={this.changeToLogin} />
     }
@@ -89,7 +98,9 @@ class App extends React.Component {
   }
 
   handleLogout = () => {
+    localStorage.clear()
     this.setState({
+      token: null,
       session: false,
       loggedInUser: null
     })
