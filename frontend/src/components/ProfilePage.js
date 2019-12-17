@@ -41,7 +41,7 @@ class ProfilePage extends React.Component {
    render () {
     return(<div>
         <div id="edit-profile-container">
-         {this.state.edit ? <EditProfileForm back={this.leaveEdit} deleteProfile={this.props.deleteProfile} onEdit={this.onEdit} user={this.props.user} /> : <button class="ui button"onClick={this.toggleEdit}>Edit Profile</button>}
+         {this.state.edit ? <EditProfileForm back={this.leaveEdit} deleteProfile={this.props.deleteProfile} onEdit={this.onEdit} userInfo={this.props.currentUser} toggleEdit={this.toggleEdit} /> : <button className="ui button" onClick={this.toggleEdit}>Edit Profile</button>}
         </div>
         <div id="my-cars">
          <MyCars cars={this.props.cars} />

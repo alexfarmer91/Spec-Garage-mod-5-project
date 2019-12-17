@@ -8,4 +8,4 @@ Mod 5 project - Automotive Social Networking
   <!-- - each car has a show page any user can see -->
   <!-- - car show page can be edited by owner -->
   - full CRUD on users 
-  - full CRUD on cars
+  <!-- - full CRUD on cars -->

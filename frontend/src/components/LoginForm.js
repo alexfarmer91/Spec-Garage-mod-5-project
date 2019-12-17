@@ -31,7 +31,7 @@ export default class LoginForm extends React.Component {
           })
         }).then(res => res.json())
           .then(data => {
-            if (data.errors) {
+            if (data.errors || data.error) {
                 console.log(data.errors)
               this.setState({
                 errors: data.errors
@@ -45,9 +45,7 @@ export default class LoginForm extends React.Component {
 
     render(){
         return(<form onSubmit={this.handleSubmit}>
-            <label for="email-field" />
             <input type="text" onChange={this.emailChange} placeholder="email" id="email-field" name="email" value={this.state.email} />
-            <label for="password-field" />
             <input type="password" onChange={this.passwordChange} placeholder="password" id="password-field" name="password" value={this.state.password} />
             <button onClick={this.props.backButtonClick} >Back</button>
             <input type="submit" value="Log In"/>

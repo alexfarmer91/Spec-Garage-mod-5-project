@@ -26,7 +26,7 @@ class CarsController < ApplicationController
       def destroy
         car = Car.find(params.require(:id))
         car.destroy
-        head :no_content
+        render json: car
       end 
 
       private 

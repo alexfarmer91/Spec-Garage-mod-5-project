@@ -1,5 +1,5 @@
 import React from 'react'
-import { Redirect } from 'react-router-dom'
+// import { Redirect } from 'react-router-dom'
 import { Form, Button, Container } from 'semantic-ui-react'
 
 export default class NewCarForm extends React.Component {

@@ -71,7 +71,7 @@ class App extends React.Component {
     fetch('http://localhost:3000/cars')
     .then(r => r.json())
     .then(allCars => {
-      console.log(allCars)
+      console.log(allCars.filter(car => car.make !== "Mazda"))
       if (localStorage.token && localStorage.user_id){
         this.setToken(localStorage)
       }
@@ -101,12 +101,12 @@ class App extends React.Component {
   }
 
   renderCar = (props) => {
-    return <CarPage {...props} />
+    return <CarPage {...props} currentUserId={this.state.loggedInUserId} deleteCar={this.deleteCar} />
   }
 
   renderProfilePage = () => {
     return (<Fragment>
-      {this.state.session ? <ProfilePage setCurrentUser={this.setCurrentUser} cars={this.state.currentUserCars} currentUser={this.state.currentUser} setCars={this.setCars} deleteProfile={this.deleteProfile} userId={this.state.loggedInUserId}/> : <Redirect to='/' /> }
+      {this.state.session ? <ProfilePage updateUser={this.updateUser} setCurrentUser={this.setCurrentUser} cars={this.state.currentUserCars} currentUser={this.state.currentUser} setCars={this.setCars} deleteProfile={this.deleteProfile} userId={this.state.loggedInUserId}/> : <Redirect to='/' /> }
     </Fragment>)
   }
 
@@ -125,7 +125,21 @@ class App extends React.Component {
    this.setState({
      currentUserCars: [...this.state.currentUserCars,
        car]
-   }, console.log(this.state.currentUserCars))
+   })
+ }
+
+ deleteCar = path => {
+    fetch(`http://localhost:3000/cars/${path}`, {
+      method: 'DELETE',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({id: path})
+      })
+      .then(r => r.json())
+      .then(deletedCar => {
+        this.setState({
+          currentUserCars: this.state.currentUserCars.filter(car => car.id !== deletedCar.id)
+        })
+      })
  }
 
 
@@ -138,16 +152,14 @@ class App extends React.Component {
       .then(res => res.json())
       .then(deletedUser => 
         this.setState({
+          token: null,
+          menuType: null,
           session: false,
-          loggedInUserId: null
-        })
+          loggedInUserId: null,
+          currentUser: null,
+          currentUserCars: []
+        }, console.log(deletedUser))
       )
-      .catch(error => {
-        this.setState({
-          session: false,
-          loggedInUserId: null
-        })
-      })
   }
 
 
