@@ -56,7 +56,8 @@ export default class EditProfileForm extends React.Component {
                 <input onChange={this.passwordChange} type="password" placeholder="New password..." value={this.state.password}/>
                 <input type="submit" value="Save" />
             </form>
-            <button onClick={this.handleDelete} >Delete Profile</button>
+            <button class="ui button" onClick={this.props.back}>Back</button>
+            <button class="ui negative button" onClick={this.handleDelete} >Delete Profile</button>
             {this.state.redirect ? <Redirect to='/' /> : null}
             </Fragment>
         )

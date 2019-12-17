@@ -1,12 +1,11 @@
 import React, {Fragment} from 'react';
 import './App.css';
 import Nav from './components/Nav.js';
-// import LoginSelect from './components/LoginSelect.js'
-import ClimbContainer from './components/ClimbContainer.js';
+import NewCarForm from './components/NewCarForm.js'
 import ButtonContainer from "./components/ButtonContainer.js"
 import LoginForm from "./components/LoginForm.js"
 import SignupForm from "./components/SignupForm.js"
-import ClimbPage from './components/ClimbPage.js'
+import CarPage from './components/CarPage.js'
 import ProfilePage from './components/ProfilePage.js'
 import { Route, Switch, NavLink, Redirect } from 'react-router-dom'
 
@@ -16,20 +15,36 @@ class App extends React.Component {
   state = {
     token: null,
     menuType: null,
-    isDisplaying: false,
-    displayClimb: {},
     session: false,
-    loggedInUserId: null
+    loggedInUserId: null,
+    currentUser: null,
+    currentUserCars: []
   }
 
-  setToken = ({ token, user_id })  =>{
+  setCurrentUser = (user) => {
+    this.setState({
+      currentUser: user
+    })
+  }
+
+  setCars = (cars) => {
+    this.setState({
+      currentUserCars: cars
+    })
+  }
+
+  setToken = (obj)  =>{
+
+    const { token, user_id } = obj
 
     localStorage.token = token
     localStorage.user_id = user_id
 
     this.setState({
       token: token,
-      loggedInUserId: user_id
+      loggedInUserId: user_id,
+      session: true,
+      menuType: null
     })
   }
 
@@ -57,6 +72,9 @@ class App extends React.Component {
     .then(r => r.json())
     .then(allCars => {
       console.log(allCars)
+      if (localStorage.token && localStorage.user_id){
+        this.setToken(localStorage)
+      }
     })
   }
 
@@ -65,36 +83,12 @@ class App extends React.Component {
       case null:
         return <ButtonContainer signupClick={this.changeToSignup} loginClick={this.changeToLogin} />
       case "signup":
-        return <SignupForm backButtonClick={this.menuBack} handleLogin={this.handleLogin}  />
+        return <SignupForm setToken={this.setToken} backButtonClick={this.menuBack} setCurrentUser={this.setCurrentUser} />
       case "login":
-        return <LoginForm setToken={this.setToken} backButtonClick={this.menuBack} handleLogin={this.handleLogin}  />
+        return <LoginForm setToken={this.setToken} backButtonClick={this.menuBack} setCurrentUser={this.setCurrentUser} />
       default:
         return <ButtonContainer signupClick={this.changeToSignup} loginClick={this.changeToLogin} />
     }
-  }
-
-
-  showClimbPage = (event) => {
-    console.log(event.target.id)
-    this.setState({
-      isDisplaying: true,
-      displayClimb: this.state.climbs.find(climb => parseInt(climb.id) === parseInt(event.target.id))
-    })
-  }
-
-  displayAllClimbs= () => {
-
-    this.setState({
-      isDisplaying: false
-    })
-  }
-
-  handleLogin = (user) =>{
-    this.setState({
-      session: true,
-      loggedInUser: user,
-      menuType: null
-    })
   }
 
   handleLogout = () => {
@@ -102,26 +96,36 @@ class App extends React.Component {
     this.setState({
       token: null,
       session: false,
-      loggedInUser: null
+      loggedInUserId: null
     })
   }
 
-  renderClimbs = () => {
-  if (this.state.isDisplaying) {
-    return <ClimbPage info={this.state} climbInfo={this.state.displayClimb} displayAllClimbs={this.displayAllClimbs}/>
-  } else { 
-    return < ClimbContainer showClimbPage={this.showClimbPage} climbs={this.state.climbs} /> 
-  }
+  renderCar = (props) => {
+    return <CarPage {...props} />
   }
 
   renderProfilePage = () => {
     return (<Fragment>
-      {this.state.session ? <ProfilePage deleteProfile={this.deleteProfile} onEdit={this.handleLogin} user={this.state.loggedInUser}/> : <Redirect to='/' /> }
+      {this.state.session ? <ProfilePage setCurrentUser={this.setCurrentUser} cars={this.state.currentUserCars} currentUser={this.state.currentUser} setCars={this.setCars} deleteProfile={this.deleteProfile} userId={this.state.loggedInUserId}/> : <Redirect to='/' /> }
     </Fragment>)
   }
 
  renderNav = () => {
-   return < Nav handleLogout={this.handleLogout} renderMenu={this.renderMenu} isLoggedIn={this.state.session} loggedInUser={this.state.loggedInUser} />
+   return (<div>
+   < Nav handleLogout={this.handleLogout} renderMenu={this.renderMenu} isLoggedIn={this.state.session} loggedInUser={this.state.currentUser} />
+   {this.renderProfilePage()}
+   </div>)
+ }
+
+ renderNewCarForm = () =>{
+   return <NewCarForm addCar={this.addCar} userId={this.state.loggedInUserId}/>
+ }
+
+ addCar = (car) => {
+   this.setState({
+     currentUserCars: [...this.state.currentUserCars,
+       car]
+   }, console.log(this.state.currentUserCars))
  }
 
 
@@ -135,13 +139,13 @@ class App extends React.Component {
       .then(deletedUser => 
         this.setState({
           session: false,
-          loggedInUser: null
+          loggedInUserId: null
         })
       )
       .catch(error => {
         this.setState({
           session: false,
-          loggedInUser: null
+          loggedInUserId: null
         })
       })
   }
@@ -149,7 +153,7 @@ class App extends React.Component {
 
 
   render() {
-
+   console.log(this.state.token)
     return (
       <div className='App'>
         <header className="App-header">
@@ -165,7 +169,13 @@ class App extends React.Component {
               </li>
 
               {
-                this.state.session ? <NavLink exact to="/profile">My Profile</NavLink> : null
+                this.state.token ? <li><NavLink exact to="/profile">Profile</NavLink></li> : null
+              }
+
+              {
+                this.state.currentUserCars.map(car => {
+                 return <li key={car.id}><NavLink exact to={`/cars/${car.id}`}>{car.year} {car.make} {car.model}</NavLink></li>
+                })
               }
               
             </ul>
@@ -174,6 +184,8 @@ class App extends React.Component {
          <Switch>
            <Route path="/discover" render={this.renderClimbs} />
            <Route path="/profile" render={this.renderProfilePage} />
+           <Route exact path="/cars/:id" render={this.renderCar} />
+           <Route path="/add-car/" render={this.renderNewCarForm} />
            <Route path="/" render={ this.renderNav } />
          </Switch>
       </div>

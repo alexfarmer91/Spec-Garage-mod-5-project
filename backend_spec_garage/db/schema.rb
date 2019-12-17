@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_13_212717) do
+ActiveRecord::Schema.define(version: 2019_12_15_185036) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "car_likes", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "car_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["car_id"], name: "index_car_likes_on_car_id"
+    t.index ["user_id"], name: "index_car_likes_on_user_id"
+  end
 
   create_table "cars", force: :cascade do |t|
     t.integer "year"
@@ -36,6 +45,7 @@ ActiveRecord::Schema.define(version: 2019_12_13_212717) do
     t.bigint "car_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "part_number"
     t.index ["car_id"], name: "index_parts_on_car_id"
   end
 
@@ -67,6 +77,8 @@ ActiveRecord::Schema.define(version: 2019_12_13_212717) do
     t.index ["car_id"], name: "index_videos_on_car_id"
   end
 
+  add_foreign_key "car_likes", "cars"
+  add_foreign_key "car_likes", "users"
   add_foreign_key "cars", "users"
   add_foreign_key "parts", "cars"
   add_foreign_key "photos", "cars"

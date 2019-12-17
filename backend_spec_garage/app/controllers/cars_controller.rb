@@ -20,7 +20,7 @@ class CarsController < ApplicationController
       def update
         car = Car.find(params.require(:id))
         car.update(car_params)
-        head :no_content
+        render json: car
       end
     
       def destroy

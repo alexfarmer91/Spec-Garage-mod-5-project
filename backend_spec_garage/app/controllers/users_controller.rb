@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-    before_action :require_login, except: [:create]
+    before_action :require_login, except: [:create, :show]
 
   def show
     user = User.find(params.require(:id))
@@ -22,7 +22,7 @@ class UsersController < ApplicationController
   def update
     user = User.find(params.require(:id))
     user.update(user_params)
-    head :no_content
+    render json: user
   end
 
   def destroy

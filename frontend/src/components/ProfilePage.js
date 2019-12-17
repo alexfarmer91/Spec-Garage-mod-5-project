@@ -1,17 +1,54 @@
 import React from 'react'
-import MyClimbs from './MyClimbs.js'
+import MyCars from './MyCars.js'
 import EditProfileForm from './EditProfileForm.js'
 
-const ProfilePage = (props) => {
+class ProfilePage extends React.Component {
+
+    state = {
+      edit: false
+    }
+
+  componentDidMount(){
+      fetch(`http://localhost:3000/users/${this.props.userId}`)
+      .then(r => r.json())
+      .then(user => {
+          this.props.setCurrentUser(user)
+          fetch('http://localhost:3000/cars/')
+          .then(r => r.json())
+          .then(cars => {
+          let filteredCars = cars.filter(car => parseInt(car.owner.id) === parseInt(this.props.userId))
+          this.props.setCars(filteredCars)
+      })
+      })
+  }
+
+  onEdit = (patch) => {
+    this.props.setCurrentUser(patch)
+  }
+
+  toggleEdit = () => {
+      this.setState({
+          edit: true
+      })
+  }
+
+  leaveEdit = () => {
+    this.setState({
+        edit: false
+    })
+}
+
+   render () {
     return(<div>
         <div id="edit-profile-container">
-         <EditProfileForm deleteProfile={props.deleteProfile} onEdit={props.onEdit} user={props.user} />
+         {this.state.edit ? <EditProfileForm back={this.leaveEdit} deleteProfile={this.props.deleteProfile} onEdit={this.onEdit} user={this.props.user} /> : <button class="ui button"onClick={this.toggleEdit}>Edit Profile</button>}
         </div>
-        <div id="my-climbs">
-         <MyClimbs climbs={props.user.climbs} />
+        <div id="my-cars">
+         <MyCars cars={this.props.cars} />
         </div>
 
     </div>)
+   }
 }
 
 export default ProfilePage;

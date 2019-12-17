@@ -4,5 +4,6 @@ class CarSerializer < ActiveModel::Serializer
   has_many :parts, serializer: PartSerializer
   has_many :photos, serializer: PhotoSerializer
   has_many :videos, serializer: VideoSerializer
+  has_many :car_likes, key: :likes, serializer: CarLikeSerializer
 
 end
