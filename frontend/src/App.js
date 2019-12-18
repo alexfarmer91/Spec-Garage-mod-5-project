@@ -83,7 +83,7 @@ class App extends React.Component {
       case null:
         return <ButtonContainer signupClick={this.changeToSignup} loginClick={this.changeToLogin} />
       case "signup":
-        return <SignupForm setToken={this.setToken} backButtonClick={this.menuBack} setCurrentUser={this.setCurrentUser} />
+        return <SignupForm setToken={this.setToken} backButtonClick={this.menuBack} setToken={this.setToken} />
       case "login":
         return <LoginForm setToken={this.setToken} backButtonClick={this.menuBack} setCurrentUser={this.setCurrentUser} />
       default:
