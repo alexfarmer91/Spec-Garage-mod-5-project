@@ -2,7 +2,7 @@ class User < ApplicationRecord
     has_secure_password
     has_many :cars, dependent: :destroy
     has_many :car_likes, dependent: :destroy
-    has_many :cars, through: :car_likes, as: :liked_cars
+    # has_many :cars, through: :car_likes, as: :liked_cars
 
       # Will return an array of follows for the given user instance
     has_many :received_follows, foreign_key: :followed_user_id, class_name: "Follow"

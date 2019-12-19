@@ -12,7 +12,7 @@ class ProfilePage extends React.Component {
       fetch(`http://localhost:3000/users/${this.props.userId}`)
       .then(r => r.json())
       .then(user => {
-          this.props.setCurrentUser(user)
+          this.props.setCurrentUser(user.id)
           fetch('http://localhost:3000/cars/')
           .then(r => r.json())
           .then(cars => {
@@ -23,7 +23,7 @@ class ProfilePage extends React.Component {
   }
 
   onEdit = (patch) => {
-    this.props.setCurrentUser(patch)
+    this.props.updateCurrentUser(patch)
   }
 
   toggleEdit = () => {

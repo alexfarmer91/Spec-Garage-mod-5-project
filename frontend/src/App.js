@@ -22,10 +22,20 @@ class App extends React.Component {
     currentUserCars: []
   }
 
-  setCurrentUser = (user) => {
+  updateCurrentUser = (user) => {
     this.setState({
       currentUser: user
     })
+  }
+
+  setCurrentUser = (userId) => {
+   fetch(`http://localhost:3000/users/${userId}`)
+   .then(r => r.json())
+   .then(user => {
+    this.setState({
+      currentUser: user
+    })
+   })
   }
 
   setCars = (cars) => {
@@ -75,6 +85,7 @@ class App extends React.Component {
       console.log(allCars.filter(car => car.make !== "Mazda"))
       if (localStorage.token && localStorage.user_id){
         this.setToken(localStorage)
+        this.setCurrentUser(localStorage.user_id)
       }
     })
   }
@@ -86,7 +97,7 @@ class App extends React.Component {
       case "signup":
         return <SignupForm setToken={this.setToken} backButtonClick={this.menuBack} setToken={this.setToken} />
       case "login":
-        return <LoginForm setToken={this.setToken} backButtonClick={this.menuBack} setCurrentUser={this.setCurrentUser} />
+        return <LoginForm setToken={this.setToken} backButtonClick={this.menuBack} />
       default:
         return <ButtonContainer signupClick={this.changeToSignup} loginClick={this.changeToLogin} />
     }
@@ -107,17 +118,19 @@ class App extends React.Component {
 
   renderProfilePage = () => {
     return (<Fragment>
-      {this.state.session ? <ProfilePage updateUser={this.updateUser} setCurrentUser={this.setCurrentUser} cars={this.state.currentUserCars} currentUser={this.state.currentUser} setCars={this.setCars} deleteProfile={this.deleteProfile} userId={this.state.loggedInUserId}/> : <Redirect to='/' /> }
+      {this.state.session ? <ProfilePage updateCurrentUser={this.updateCurrentUser} setCurrentUser={this.setCurrentUser} cars={this.state.currentUserCars} currentUser={this.state.currentUser} setCars={this.setCars} deleteProfile={this.deleteProfile} userId={this.state.loggedInUserId}/> : <Redirect to='/' /> }
     </Fragment>)
   }
 
-  renderUserPage = () => {
-   return <UserPage />
+  renderUserPage = (props) => {
+   return <UserPage {...props} currentUser={this.state.currentUser} />
   }
 
  renderNav = () => {
    return (<div>
+     <Fragment>
    < Nav handleLogout={this.handleLogout} renderMenu={this.renderMenu} isLoggedIn={this.state.session} loggedInUser={this.state.currentUser} />
+   </Fragment>
    {this.renderProfilePage()} 
    {/* we need to move this ^^ */}
    </div>)
@@ -176,7 +189,7 @@ class App extends React.Component {
       <div className='App'>
         <header className="App-header">
         <span className="headerText">Spec Garage</span><br></br>
-			<span className="normalText">Share Your Cars With The Internet</span>
+			  <span className="normalText">Share Your Cars With The Internet</span>
         <aside className="sidebar">
             <ul>
               <li>
