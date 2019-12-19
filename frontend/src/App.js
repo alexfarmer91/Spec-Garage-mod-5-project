@@ -7,6 +7,7 @@ import LoginForm from "./components/LoginForm.js"
 import SignupForm from "./components/SignupForm.js"
 import CarPage from './components/CarPage.js'
 import ProfilePage from './components/ProfilePage.js'
+import UserPage from './components/UserPage.js'
 import { Route, Switch, NavLink, Redirect } from 'react-router-dom'
 
 
@@ -110,10 +111,15 @@ class App extends React.Component {
     </Fragment>)
   }
 
+  renderUserPage = () => {
+   return <UserPage />
+  }
+
  renderNav = () => {
    return (<div>
    < Nav handleLogout={this.handleLogout} renderMenu={this.renderMenu} isLoggedIn={this.state.session} loggedInUser={this.state.currentUser} />
-   {this.renderProfilePage()}
+   {this.renderProfilePage()} 
+   {/* we need to move this ^^ */}
    </div>)
  }
 
@@ -197,6 +203,7 @@ class App extends React.Component {
            <Route path="/discover" render={this.renderClimbs} />
            <Route path="/profile" render={this.renderProfilePage} />
            <Route exact path="/cars/:id" render={this.renderCar} />
+           <Route exact path="/users/:id" render={this.renderUserPage} />
            <Route path="/add-car/" render={this.renderNewCarForm} />
            <Route path="/" render={ this.renderNav } />
          </Switch>

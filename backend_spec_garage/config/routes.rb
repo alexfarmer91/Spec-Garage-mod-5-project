@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :follows
   resources :car_likes
   resources :videos
   resources :photos
