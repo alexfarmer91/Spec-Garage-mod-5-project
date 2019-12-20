@@ -1,19 +1,21 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom'
-import { Header, Icon, Image, Menu, Segment, Sidebar } from 'semantic-ui-react';
+import { Header, Icon, Image, Segment, Sidebar, Menu } from 'semantic-ui-react';
 
 const MenuSidebar = (props) => {
 //   const [visible, setVisible] = useBooleanKnob({ name: 'visible' })
 
-    return(<Sidebar as={Segment}>
-        <Sidebar
-        as={Menu}
-        animation='overlay'
-        icon='labeled'
-        inverted
+    return(
+    // <Sidebar as={Segment}>
+        <Menu
+        style={{float: 'left'}}
+        as={Sidebar}
+        // animation='overlay'
+        // icon='labeled'
+        // inverted
         // onHide={() => setVisible(false)}
         vertical
-        // visible={true}
+        visible={true}
         width='thin'
       >
         <Menu.Item as={NavLink} exact to='/'>
@@ -26,7 +28,7 @@ const MenuSidebar = (props) => {
           Discover
         </Menu.Item>
 
-        {props.token? <Menu.Item as='a'>
+        {props.token? <Menu.Item as={NavLink} exact to='/profile'>
           <Icon name='cogs' />
           Profile
         </Menu.Item> : null}
@@ -39,7 +41,7 @@ const MenuSidebar = (props) => {
                </Menu.Item>)
                 })
               }        
-      </Sidebar>
+      </Menu>)
 
       {/* <Sidebar.Pusher>
         <Segment basic>
@@ -47,7 +49,8 @@ const MenuSidebar = (props) => {
           <Image src='https://react.semantic-ui.com/images/wireframe/paragraph.png' />
         </Segment>
       </Sidebar.Pusher> */}
-    </Sidebar>)
+    {/* </Sidebar> */}
+    
 }
 
 export default MenuSidebar;

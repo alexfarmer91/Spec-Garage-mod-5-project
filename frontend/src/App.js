@@ -188,29 +188,8 @@ class App extends React.Component {
         <span className="headerText">Spec Garage</span><br></br>
 			  <span className="normalText">Share Your Cars With The Internet</span>
         {this.renderNav()}
-        <MenuSidebar currentUserCars={this.state.currentUserCars} token={this.state.token} />
-        {/* <aside className="sidebar">
-            <ul>
-              <li>
-                <NavLink exact to="/">Home</NavLink>
-              </li>
-              <li>
-                <NavLink exact to="/discover">Discover</NavLink>
-              </li>
-
-              {
-                this.state.token ? <li><NavLink exact to="/profile">Profile</NavLink></li> : null
-              }
-
-              {
-                this.state.currentUserCars.map(car => {
-                 return <li key={car.id}><NavLink exact to={`/cars/${car.id}`}>{car.year} {car.make} {car.model}</NavLink></li>
-                })
-              }
-              
-            </ul>
-          </aside> */}
          </header>
+        <MenuSidebar currentUserCars={this.state.currentUserCars} token={this.state.token} />
          <Switch>
            <Route path="/discover" render={this.renderProfilePage} />
            <Route path="/profile" render={this.renderProfilePage} />

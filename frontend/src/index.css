@@ -34,8 +34,3 @@ code {
   padding: 15px;
   display: block;
 }
-.active {
-  background: grey;
-  filter: blur(2px);
-  transition: filter 1s;
-}
