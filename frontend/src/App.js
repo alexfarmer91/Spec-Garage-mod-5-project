@@ -8,6 +8,7 @@ import SignupForm from "./components/SignupForm.js"
 import CarPage from './components/CarPage.js'
 import ProfilePage from './components/ProfilePage.js'
 import UserPage from './components/UserPage.js'
+import MenuSidebar from './components/MenuSidebar.js'
 import { Route, Switch, NavLink, Redirect } from 'react-router-dom'
 
 
@@ -127,13 +128,10 @@ class App extends React.Component {
   }
 
  renderNav = () => {
-   return (<div>
+   return (
      <Fragment>
    < Nav handleLogout={this.handleLogout} renderMenu={this.renderMenu} isLoggedIn={this.state.session} loggedInUser={this.state.currentUser} />
-   </Fragment>
-   {this.renderProfilePage()} 
-   {/* we need to move this ^^ */}
-   </div>)
+   </Fragment>)
  }
 
  renderNewCarForm = () =>{
@@ -184,13 +182,14 @@ class App extends React.Component {
 
 
   render() {
-   console.log(this.state.token)
     return (
       <div className='App'>
         <header className="App-header">
         <span className="headerText">Spec Garage</span><br></br>
 			  <span className="normalText">Share Your Cars With The Internet</span>
-        <aside className="sidebar">
+        {this.renderNav()}
+        <MenuSidebar currentUserCars={this.state.currentUserCars} token={this.state.token} />
+        {/* <aside className="sidebar">
             <ul>
               <li>
                 <NavLink exact to="/">Home</NavLink>
@@ -210,15 +209,15 @@ class App extends React.Component {
               }
               
             </ul>
-          </aside>
+          </aside> */}
          </header>
          <Switch>
-           <Route path="/discover" render={this.renderClimbs} />
+           <Route path="/discover" render={this.renderProfilePage} />
            <Route path="/profile" render={this.renderProfilePage} />
            <Route exact path="/cars/:id" render={this.renderCar} />
            <Route exact path="/users/:id" render={this.renderUserPage} />
            <Route path="/add-car/" render={this.renderNewCarForm} />
-           <Route path="/" render={ this.renderNav } />
+           <Route exact path="/" render={ this.renderProfilePage } />
          </Switch>
       </div>
     )

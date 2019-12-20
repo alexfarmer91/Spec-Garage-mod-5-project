@@ -16,6 +16,7 @@ code {
 
 .sidebar {
   float: left;
+  /* position: absolute; */
   background: aqua;
   color: white;
   width:120px; 
