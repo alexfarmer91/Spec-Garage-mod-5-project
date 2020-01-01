@@ -1,12 +1,12 @@
-import React from 'react'
+import React, {Fragment} from 'react';
 
 const ButtonContainer = (props) => {
 	return (
 		
-			<div>
-				<button onClick={props.loginClick} >Log In</button>
-				<button onClick={props.signupClick} >Sign Up</button>
-			</div>
+			<Fragment>
+				<button className="item" onClick={props.loginClick} >Log In</button>
+				<button className="item" onClick={props.signupClick} >Sign Up</button>
+			</Fragment>
 	)
 }
 

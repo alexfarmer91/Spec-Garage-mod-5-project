@@ -9,7 +9,7 @@ const MyCars = (props) => {
    
    <Container>
 <div className="ui floating message">
-  <p>My Cars!</p>
+  <p>My Cars</p>
 </div>
       <div className="ui container" style={{paddingLeft:"140px"}}>
             <div className="ui grid" >

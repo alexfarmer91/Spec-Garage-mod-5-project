@@ -1,12 +1,12 @@
-import React from 'react'
+import React, {Fragment} from 'react';
 import WelcomeNav from './WelcomeNav.js'
 
 const Nav = (props) => {
 	return (
-		<div className="navWrapper">
+		<Fragment>
 			{props.isLoggedIn ? <WelcomeNav logout={props.handleLogout} user={props.loggedInUser} /> : props.renderMenu()}
 
-		</div>
+		</Fragment>
 	)
 }
 

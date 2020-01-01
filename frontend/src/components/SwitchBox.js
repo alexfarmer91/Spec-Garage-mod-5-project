@@ -1,5 +1,6 @@
 import React from 'react';
 import WelcomePage from './WelcomePage.js'
+import DiscoverPage from './DiscoverPage.js'
 import { Route, Switch } from 'react-router-dom'
 
 class SwitchBox extends React.Component {
@@ -15,7 +16,7 @@ class SwitchBox extends React.Component {
   render(){
     return(
     <Switch>
-        <Route path="/discover" render={this.props.renderProfilePage} />
+        <Route path="/discover" render={this.props.renderDiscoverPage} />
         <Route path="/profile" render={this.props.renderProfilePage} />
         <Route exact path="/cars/:id" render={this.props.renderCar} />
         <Route exact path="/users/:id" render={this.props.renderUserPage} />

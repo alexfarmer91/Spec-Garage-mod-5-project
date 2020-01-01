@@ -1,4 +1,5 @@
 import React, {Fragment} from 'react';
+import carPlaceholder from './components/assets/menu-car-icon.png'
 import './App.css';
 import Nav from './components/Nav.js';
 import NewCarForm from './components/NewCarForm.js'
@@ -10,7 +11,10 @@ import ProfilePage from './components/ProfilePage.js'
 import UserPage from './components/UserPage.js'
 import MenuSidebar from './components/MenuSidebar.js'
 import SwitchBox from './components/SwitchBox.js'
-import { Route, Switch, NavLink, Redirect } from 'react-router-dom'
+
+import { Redirect } from 'react-router-dom'
+import CarCard from './components/CarCard.js';
+import DiscoverPage from './components/DiscoverPage';
 
 
 class App extends React.Component {
@@ -21,7 +25,17 @@ class App extends React.Component {
     session: false,
     loggedInUserId: null,
     currentUser: null,
-    currentUserCars: []
+    currentUserCars: [],
+    allCars: [],
+    filteredCars: [],
+    searchTerm: ""
+  }
+
+  handleSearch = (event) => {
+   this.setState({
+     searchTerm: event.target.value,
+     filteredCars: this.state.allCars.filter(car => (car.make.toLowerCase() + " " + car.model.toLowerCase()).includes(event.target.value))
+   })
   }
 
   updateCurrentUser = (user) => {
@@ -83,8 +97,12 @@ class App extends React.Component {
   componentDidMount(){
     fetch('http://localhost:3000/cars')
     .then(r => r.json())
-    .then(allCars => {
-      console.log(allCars.filter(car => car.make !== "Mazda"))
+    .then(fetchedCars => {
+      console.log(fetchedCars)
+      this.setState({
+        allCars: fetchedCars,
+        filteredCars: fetchedCars
+      })
       if (localStorage.token && localStorage.user_id){
         this.setToken(localStorage)
         this.setCurrentUser(localStorage.user_id)
@@ -179,19 +197,27 @@ class App extends React.Component {
         }, console.log(deletedUser))
       )
   }
+
+  renderAllCarsAsCards = () => {
+    return this.state.filteredCars.map(car => {
+      return <CarCard key={car.id} mainImg={car.photos[0] ? car.photos[0].url : carPlaceholder} carInfo={car} />
+    })
+  }
+
+  renderDiscoverPage = () => {
+    return <DiscoverPage handleSearch={this.handleSearch} renderAllCarsAsCards={this.renderAllCarsAsCards} />
+  }
  
   renderSwitchbox = () => {
-    return (<SwitchBox session={this.state.session} renderProfilePage={this.renderProfilePage} renderCar={this.renderCar} renderUserPage={this.renderUserPage} renderNewCarForm={this.renderNewCarForm} />)
+    return (<SwitchBox renderDiscoverPage={this.renderDiscoverPage} session={this.state.session} renderProfilePage={this.renderProfilePage} renderCar={this.renderCar} renderUserPage={this.renderUserPage} renderNewCarForm={this.renderNewCarForm} />)
   }
 
   render() {
     return (
       <div className='App'>
             <div className="ui menu">
-              <a className="item">Browse</a>
-              <a className="item">Submit</a>
               <div className="right menu">
-                <a className="item">Sign Up</a>
+                <div className="item">Spec Garage</div>
                 <div className="item">{this.renderNav()}</div>
               </div>
             </div>
