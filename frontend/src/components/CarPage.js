@@ -82,10 +82,10 @@ class CarPage extends React.Component {
  render(){
     return (<div>
       {this.state.photos.map(photo => {
-        return <img key={photo.id} style={{width: "600px", height: "400px", objectFit: "cover"}} src={photo.url} alt={this.state.car ? this.state.car.make + "-" + photo.id: "image"} />
+        return <img className="ui centered medium rounded image" key={photo.id} style={{width: "600px", height: "400px", objectFit: "cover"}} src={photo.url} alt={this.state.car ? this.state.car.make + "-" + photo.id: "image"} />
       }) }
       <br></br>
-      <h3>{this.state.car ? this.state.car.year + " " + this.state.car.make + " " + this.state.car.model : null}</h3>
+      <h3>{this.state.car ? this.state.car.year + " " + this.state.car.make + " " + this.state.car.model + " " + this.state.car.trim : null}</h3>
       <h4>{this.state.car ? this.state.car.nickname : null}</h4>
       {this.state.car ? this.renderEdit() : null}
       {this.state.deleted ? <Redirect to="/profile" /> : null}

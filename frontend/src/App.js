@@ -9,6 +9,7 @@ import CarPage from './components/CarPage.js'
 import ProfilePage from './components/ProfilePage.js'
 import UserPage from './components/UserPage.js'
 import MenuSidebar from './components/MenuSidebar.js'
+import SwitchBox from './components/SwitchBox.js'
 import { Route, Switch, NavLink, Redirect } from 'react-router-dom'
 
 
@@ -178,26 +179,25 @@ class App extends React.Component {
         }, console.log(deletedUser))
       )
   }
-
-
+ 
+  renderSwitchbox = () => {
+    return (<SwitchBox session={this.state.session} renderProfilePage={this.renderProfilePage} renderCar={this.renderCar} renderUserPage={this.renderUserPage} renderNewCarForm={this.renderNewCarForm} />)
+  }
 
   render() {
     return (
       <div className='App'>
-        <header className="App-header">
-        <span className="headerText">Spec Garage</span><br></br>
-			  <span className="normalText">Share Your Cars With The Internet</span>
-        {this.renderNav()}
-         </header>
-        <MenuSidebar currentUserCars={this.state.currentUserCars} token={this.state.token} />
-         <Switch>
-           <Route path="/discover" render={this.renderProfilePage} />
-           <Route path="/profile" render={this.renderProfilePage} />
-           <Route exact path="/cars/:id" render={this.renderCar} />
-           <Route exact path="/users/:id" render={this.renderUserPage} />
-           <Route path="/add-car/" render={this.renderNewCarForm} />
-           <Route exact path="/" render={ this.renderProfilePage } />
-         </Switch>
+            <div className="ui menu">
+              <a className="item">Browse</a>
+              <a className="item">Submit</a>
+              <div className="right menu">
+                <a className="item">Sign Up</a>
+                <div className="item">{this.renderNav()}</div>
+              </div>
+            </div>
+
+        <MenuSidebar renderSwitchbox={this.renderSwitchbox} currentUserCars={this.state.currentUserCars} token={this.state.token} />
+
       </div>
     )
   }

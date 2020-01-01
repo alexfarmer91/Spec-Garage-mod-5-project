@@ -1,4 +1,6 @@
 import React, {Fragment} from 'react';
+import { Card, Icon, Image, Loader, Divider, Grid, Segment } from 'semantic-ui-react' 
+import { Redirect } from 'react-router-dom'
 import FollowButton from './buttons/FollowButton.js'
 import UnfollowButton from './buttons/UnfollowButton.js'
 
@@ -88,10 +90,67 @@ export default class UserPage extends React.Component{
     }
    }
 
+   buttonSwitcher = () => {
+       return (<Fragment>
+        {this.state.followed ? <UnfollowButton unfollow={this.unfollow} /> : <FollowButton follow={this.follow} />}
+    </Fragment>)
+   }
+
+   followSection = () =>{
+       return (<Segment>
+        <Grid columns={2} relaxed='very'>
+          <Grid.Column>
+          <Fragment>
+            <Icon name='user' />
+            {this.state.user.my_followers.length} {parseInt(this.state.user.my_followers.length) === 1 ? "follower" : "followers"}
+          </Fragment>
+          </Grid.Column>
+          <Grid.Column>
+           {this.buttonSwitcher()}
+          </Grid.Column>
+        </Grid>
+    
+        <Divider vertical>
+            </Divider>
+      </Segment>)
+   }
+
+   redirectIfSameUser = () => {
+       try { 
+       if (parseInt(this.props.match.params.id) === parseInt(localStorage.user_id)) {
+           return <Redirect to ="/profile" />
+       }
+    } catch {
+        console.log('current user not yet mounted')
+    }
+   }
+   
+
     render(){
-        console.log(this.props.match.url)
-        return(<Fragment>
-            {this.state.followed ? <UnfollowButton unfollow={this.unfollow} /> : <FollowButton follow={this.follow} />}
-        </Fragment>)
+        console.log(this.props.match.params.id)
+        if (this.props.currentUser){
+        console.log(`hello ${this.props.currentUser.id}`)
+        }
+
+            if (this.state.user) {
+                return (<Card centered>
+                    <Image src={this.state.user.avatar} />
+                    <Card.Content>
+                       <Card.Header>{this.state.user.username}</Card.Header>
+                       <Card.Meta>
+                         <span className='bio'>{this.state.user.location}</span>
+                       </Card.Meta>
+                       <Card.Description>
+                         {this.state.user.bio}
+                       </Card.Description>
+                     </Card.Content>
+                     <Card.Content extra>
+                       {this.followSection()}
+                    </Card.Content>
+                    {this.redirectIfSameUser()}
+                 </Card>)
+            } else {
+                return <Loader />
+            }
     }
 }

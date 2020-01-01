@@ -3,10 +3,14 @@ import { Card, Icon, Image } from 'semantic-ui-react'
 
 const CarCard = (props) => {
 
-    return (<Card>
-    <Image className="card-img-small" src={props.mainImg} href={`/cars/${props.carInfo.id}`} fluid={false} />
+    return (
+      <div className="four wide column" >
+    <div className="ui two column stretched grid padded" style={{paddingLeft:"1%", height: "100%"}}>
+
+    <Card>
+    <Image rounded className="card-img-large" src={props.mainImg} href={`/cars/${props.carInfo.id}`} fluid={false} />
     <Card.Content>
-      <Card.Header>{props.carInfo.year} {props.carInfo.make} {props.carInfo.model}</Card.Header>
+      <Card.Header>{props.carInfo.year} {props.carInfo.make} {props.carInfo.model} {props.carInfo.trim}</Card.Header>
       <Card.Meta>
         <span className='owner'>Owned by: {props.carInfo.owner.username}</span>
       </Card.Meta>
@@ -21,6 +25,8 @@ const CarCard = (props) => {
       </a>
     </Card.Content>
   </Card>
+  </div>
+  </div>
     )
   
 }

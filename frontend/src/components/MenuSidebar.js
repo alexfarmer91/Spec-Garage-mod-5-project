@@ -1,18 +1,18 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom'
-import { Header, Icon, Image, Segment, Sidebar, Menu } from 'semantic-ui-react';
+import { Icon, Segment, Sidebar, Menu } from 'semantic-ui-react';
 
 const MenuSidebar = (props) => {
 //   const [visible, setVisible] = useBooleanKnob({ name: 'visible' })
 
     return(
-    // <Sidebar as={Segment}>
-        <Menu
+    <Sidebar.Pushable as={Segment}>
+        <Sidebar
         style={{float: 'left'}}
-        as={Sidebar}
-        // animation='overlay'
-        // icon='labeled'
-        // inverted
+        as={Menu}
+        animation='overlay'
+        icon='labeled'
+        inverted
         // onHide={() => setVisible(false)}
         vertical
         visible={true}
@@ -41,15 +41,16 @@ const MenuSidebar = (props) => {
                </Menu.Item>)
                 })
               }        
-      </Menu>)
+      </Sidebar>
 
-      {/* <Sidebar.Pusher>
+      <Sidebar.Pusher>
         <Segment basic>
-          <Header as='h3'>Application Content</Header>
-          <Image src='https://react.semantic-ui.com/images/wireframe/paragraph.png' />
+          {/* <Header as='h3'>Application Content</Header>
+          <Image src='https://react.semantic-ui.com/images/wireframe/paragraph.png' /> */}
+          {props.renderSwitchbox()}
         </Segment>
-      </Sidebar.Pusher> */}
-    {/* </Sidebar> */}
+      </Sidebar.Pusher>
+    </Sidebar.Pushable>)
     
 }
 
