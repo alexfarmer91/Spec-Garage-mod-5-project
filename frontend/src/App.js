@@ -205,7 +205,7 @@ class App extends React.Component {
   }
 
   renderDiscoverPage = () => {
-    return <DiscoverPage handleSearch={this.handleSearch} renderAllCarsAsCards={this.renderAllCarsAsCards} />
+    return <DiscoverPage results={this.state.filteredCars} handleSearch={this.handleSearch} renderAllCarsAsCards={this.renderAllCarsAsCards} />
   }
  
   renderSwitchbox = () => {

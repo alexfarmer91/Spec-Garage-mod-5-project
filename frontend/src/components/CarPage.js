@@ -1,6 +1,7 @@
 import React from 'react';
-import { Button, Container } from 'semantic-ui-react'
+import { Button, Container, Card, Image, Icon } from 'semantic-ui-react'
 import EditCarForm from './EditCarForm.js'
+import carPlaceholder from './assets/menu-car-icon.png'
 import { Redirect } from 'react-router-dom'
 
 class CarPage extends React.Component {
@@ -79,18 +80,26 @@ class CarPage extends React.Component {
     }
   }
 
- render(){
-    return (<div>
-      {this.state.photos.map(photo => {
-        return <img className="ui centered medium rounded image" key={photo.id} style={{width: "600px", height: "400px", objectFit: "cover"}} src={photo.url} alt={this.state.car ? this.state.car.make + "-" + photo.id: "image"} />
-      }) }
-      <br></br>
-      <h3>{this.state.car ? this.state.car.year + " " + this.state.car.make + " " + this.state.car.model + " " + this.state.car.trim : null}</h3>
-      <h4>{this.state.car ? this.state.car.nickname : null}</h4>
-      {this.state.car ? this.renderEdit() : null}
-      {this.state.deleted ? <Redirect to="/profile" /> : null}
-      </div>
-      )
+ render(){   
+       return (<Container>
+         <Card style={{"margin": "0 auto"}}>
+        <Image rounded src={this.state.photos[0] ? this.state.photos[0].url : carPlaceholder} fluid={false} />
+        <Card.Content>
+      <Card.Header>{this.state.car ? this.state.car.year + " " + this.state.car.make + " " + this.state.car.model + " " + this.state.car.trim : null}</Card.Header>
+      <Card.Description>
+        "{this.state.car ? this.state.car.nickname : null}"
+      </Card.Description>
+      <Card.Meta>
+        {this.state.car ? <a href={`/users/${this.state.car.owner.id}`} className='owner'>Owned by: {this.state.car.owner.username}</a> : null}
+      </Card.Meta>
+      <Card.Description>
+        {this.state.car ? `This car has ${this.state.car.parts.length} ${parseInt(this.state.car.parts.length) === 1 ? "part" : "parts"} installed.` : null}
+      </Card.Description>
+    </Card.Content>
+       </Card>
+        {this.state.car ? this.renderEdit() : null}
+        {this.state.deleted ? <Redirect to="/profile" /> : null}
+       </Container>)
    }
 }
 
